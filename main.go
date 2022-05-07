@@ -8,22 +8,19 @@ import (
 	"github.com/udonetsm/help/helper"
 )
 
-var Sc stan.Conn
-
-func Connect(clientid string) {
-	cluster := "test-cluster"
-	url := "nats://127.0.0.1:4222"
-	sc, err := stan.Connect(cluster, clientid, stan.NatsURL(url))
+func ConnectAndPublish(clientid, clusterid, url, sub string) {
+	sc, err := stan.Connect(clusterid, clientid, stan.NatsURL(url))
 	if err != nil {
 		log.Println(err)
 		return
 	}
 	log.Println("Connetced successfully")
-	Sc = sc
+	data := GetData()
+	Pub(data, sub, sc)
 }
 
-func Pub(data []byte, sub string) {
-	err := Sc.Publish(sub, data)
+func Pub(data []byte, sub string, sc stan.Conn) {
+	err := sc.Publish(sub, data)
 	if err != nil {
 		log.Println("Fail publish with ", err)
 		return
@@ -31,14 +28,11 @@ func Pub(data []byte, sub string) {
 }
 
 func main() {
-	Pub([]byte(Data_json), "sub")
+	ConnectAndPublish("-", "test-cluster", "nats://127.0.0.1:4222", "orders")
 }
 
-var Data_json string
-
-func init() {
+func GetData() []byte {
 	bytesdata, err := ioutil.ReadFile(helper.Home() + "/Documents/L0/model.json")
-	helper.Errors(err, "ioutilreadfile(init)")
-	Data_json = string(bytesdata)
-	Connect("-")
+	helper.Errors(err, "ioutilreadfile")
+	return bytesdata
 }
