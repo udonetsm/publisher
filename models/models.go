@@ -55,3 +55,8 @@ type Order struct {
 	DateCreated        time.Time `json:"date_created,omitempty"`
 	Oof_shard          string    `json:"oof_shard,omitempty"`
 }
+
+type Answer struct {
+	Key   string `json:"key"`
+	Value string `json:"value"`
+}
