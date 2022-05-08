@@ -20,7 +20,7 @@ func ConnectAndPublish(clientid, clusterid, url, sub string) {
 }
 
 func Pub(data []byte, sub string, sc stan.Conn) {
-	err := sc.Publish(sub, data)
+	err := sc.Publish(sub, []byte("data"))
 	if err != nil {
 		log.Println("Fail publish with ", err)
 		return

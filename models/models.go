@@ -1,6 +1,10 @@
 package models
 
-import "time"
+import (
+	"encoding/json"
+	"net/http"
+	"time"
+)
 
 type Delivery struct {
 	Name    string `json:"name ,omitempty"`
@@ -56,7 +60,18 @@ type Order struct {
 	Oof_shard          string    `json:"oof_shard,omitempty"`
 }
 
-type Answer struct {
-	Key   string `json:"key"`
-	Value string `json:"value"`
+type Render interface {
+	ShowJSON()
+}
+
+func (order *Order) ShowJSON(w http.ResponseWriter, r *http.Request, data []byte) {
+	err := json.Unmarshal(data, &order)
+	if err == nil {
+		json.NewEncoder(w).Encode(&order)
+		return
+	}
+}
+
+func Show(object Render) {
+	object.ShowJSON()
 }
