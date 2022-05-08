@@ -61,17 +61,15 @@ type Order struct {
 }
 
 type Render interface {
-	ShowJSON(w http.ResponseWriter, r *http.Request, data []byte)
+	ShowJSON(w http.ResponseWriter, r *http.Request)
 }
 
-func (order *Order) ShowJSON(w http.ResponseWriter, r *http.Request, data []byte) {
-	err := json.Unmarshal(data, &order)
-	if err == nil {
+func (order *Order) ShowJSON(w http.ResponseWriter, r *http.Request) {
 		json.NewEncoder(w).Encode(&order)
 		return
 	}
 }
 
-func Show(object Render, w http.ResponseWriter, r *http.Request, data []byte) {
-	object.ShowJSON(w, r, data)
+func Show(object Render, w http.ResponseWriter, r *http.Request) {
+	object.ShowJSON(w, r)
 }
