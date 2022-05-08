@@ -61,7 +61,7 @@ type Order struct {
 }
 
 type Render interface {
-	ShowJSON()
+	ShowJSON(w http.ResponseWriter, r *http.Request, data []byte)
 }
 
 func (order *Order) ShowJSON(w http.ResponseWriter, r *http.Request, data []byte) {
@@ -72,6 +72,6 @@ func (order *Order) ShowJSON(w http.ResponseWriter, r *http.Request, data []byte
 	}
 }
 
-func Show(object Render) {
-	object.ShowJSON()
+func Show(object Render, w http.ResponseWriter, r *http.Request, data []byte) {
+	object.ShowJSON(w, r, data)
 }
