@@ -65,9 +65,7 @@ type Render interface {
 }
 
 func (order *Order) ShowJSON(w http.ResponseWriter, r *http.Request) {
-		json.NewEncoder(w).Encode(&order)
-		return
-	}
+	json.NewEncoder(w).Encode(&order)
 }
 
 func Show(object Render, w http.ResponseWriter, r *http.Request) {
